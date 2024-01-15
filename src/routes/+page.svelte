@@ -14,5 +14,6 @@
     <Dropdown titleText="Choose city" bind:selectedId={cityId} {items} />
 
     <Weather kind="sunny" temperature={20} title={'New York'} />
+    <Weather kind="sunny" temperature={20} title={'New York'} mode={'compact'} />
   </div>
 </Content>
