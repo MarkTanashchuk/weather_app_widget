@@ -35,7 +35,8 @@
     "@storybook/addon-a11y": "^7.6.6",
     "@storybook/addon-storysource": "^7.6.6",
     "@storybook/addon-svelte-csf": "^4.0.13",
-    "carbon-icons-svelte": "^12.4.2"
+    "carbon-icons-svelte": "^12.4.2",
+    "country-list": "^2.3.0"
   },
   "peerDependencies": {
     "svelte": "^4.0.0"
