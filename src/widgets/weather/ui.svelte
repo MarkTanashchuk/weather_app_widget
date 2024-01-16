@@ -1,10 +1,10 @@
 <script lang="ts">
   import { Tile } from 'carbon-components-svelte';
-  import SunIcon from 'carbon-icons-svelte/lib/Sun.svelte';
 
   export let title: string;
+  export let iconURL: string;
   export let temperature: number;
-  export let kind: 'sunny';
+  export let kind: string;
   export let mode: 'compact' | 'normal' = 'normal';
 </script>
 
@@ -16,9 +16,7 @@
       <p class="text-gray-600 capitalize">{kind}</p>
     </div>
 
-    {#if kind === 'sunny'}
-      <SunIcon class="w-16 h-16 text-yellow-500" />
-    {/if}
+    <img class="w-16 h-16" src={iconURL} alt={kind} />
   {:else if mode === 'compact'}
     <div class="flex justify-between items-center w-full text-gray-600">
       <div class="tracking-tight font-bold">{title}</div>
@@ -26,9 +24,7 @@
         {temperature}°C,
         <span class="capitalize">{kind}</span>
       </div>
-      {#if kind === 'sunny'}
-        <SunIcon class="w-6 h-6 text-yellow-500" />
-      {/if}
+      <img class="w-16 h-16" src={iconURL} alt={kind} />
     </div>
   {/if}
 </Tile>
