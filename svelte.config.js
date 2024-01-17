@@ -14,6 +14,8 @@ const config = {
 		adapter: adapter(),
     alias: {
       "$widgets": "src/widgets",
+      "$features": "src/features",
+      "$shared": "src/shared"
     }
 	}
 };
