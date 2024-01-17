@@ -49,6 +49,7 @@ export interface WeatherData {
   name: string;
   country: string;
   iconURL: string;
+  description: string;
   coord: Coord;
   base: string;
   main: Main;
@@ -83,12 +84,13 @@ export async function getWeather(city: string): Promise<WeatherData> {
   } catch (err) {
     console.warn(err);
 
-    throw Error('Internal server error');
+    throw Error('Internal fetching error occurred. Please try again');
   }
 
   return {
     ...result,
     country: getName(result.sys.country) || 'Unknown',
-    iconURL: `https://openweathermap.org/img/wn/${result.weather[0]?.icon}@1x.png`
+    description: result.weather[0]?.description || 'Unknown',
+    iconURL: `https://openweathermap.org/img/wn/${result.weather[0]?.icon}@2x.png`
   };
 }
