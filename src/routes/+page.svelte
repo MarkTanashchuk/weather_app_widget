@@ -4,6 +4,8 @@
     DropdownItemId
   } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
 
+  import type { WeatherData } from '$widgets/weather/index.js';
+
   export interface CountrySelectionEvent extends CustomEvent {
     detail: {
       selectedId: DropdownItemId;
@@ -13,7 +15,7 @@
 </script>
 
 <script lang="ts">
-  import Weather from '$widgets/weather/index.svelte';
+  import { WeatherCard, getWeather } from '$widgets/weather/index.js';
   import { Button, Content, Dropdown, Search, Tile } from 'carbon-components-svelte';
 
   const items = [
@@ -22,8 +24,15 @@
     { id: '2', text: 'London' }
   ];
 
+  let weatherHistory: WeatherData[] = [];
+
   let cityId: string = '0';
   let currentCity: string = '';
+  let currentCityWeather: Promise<WeatherData> | null = null;
+
+  function handleSearch() {
+    currentCityWeather = getWeather(currentCity);
+  }
 
   function handleSearchReset() {
     cityId = '0';
@@ -37,6 +46,10 @@
     } else {
       currentCity = event.detail.selectedItem.text;
     }
+  }
+
+  function handleStoringCurrentWeatherREFACTOR(node: HTMLDivElement, data: WeatherData) {
+    weatherHistory = [...weatherHistory, data];
   }
 </script>
 
@@ -60,10 +73,55 @@ border-bottom: 1px solid rgb(141, 141, 141)"
         />
       </div>
 
-      <Button class="w-full max-w-none text-white bg-[#0353e9] mx-auto">Search</Button>
+      <Button class="w-full max-w-none text-white bg-[#0353e9] mx-auto" on:click={handleSearch}>
+        Search
+      </Button>
     </Tile>
 
-    <Weather kind="sunny" temperature={20} title={'New York'} />
-    <Weather kind="sunny" temperature={20} title={'New York'} mode={'compact'} />
+    <Tile>
+      <h2 class="font-bold">Current weather:</h2>
+      <div class="py-2">
+        {#if currentCityWeather !== null}
+          {#await currentCityWeather}
+            <p>Weather is loading...</p>
+          {:then data}
+            <div class="contents" use:handleStoringCurrentWeatherREFACTOR={data}>
+              <WeatherCard
+                kind={data.description}
+                iconURL={data.iconURL}
+                temperature={data.main.temp}
+                title={data.name}
+              />
+            </div>
+          {:catch error}
+            <p class="text-red-600">{error.message}</p>
+          {/await}
+        {:else}
+          <p class="text-black">
+            Enter the city name and click on the search button to obtain the current weather for the
+            desired city
+          </p>
+        {/if}
+      </div>
+    </Tile>
+
+    <Tile>
+      {#if weatherHistory.length > 0}
+        <h2 class="font-bold">Search history:</h2>
+        <div class="flex flex-col">
+          {#each weatherHistory as item}
+            <WeatherCard
+              kind={item.description}
+              iconURL={item.iconURL}
+              temperature={item.main.temp}
+              title={item.name}
+              mode="compact"
+            />
+          {/each}
+        </div>
+      {:else}
+        <p>Make at least one search to enable search history</p>
+      {/if}
+    </Tile>
   </div>
 </Content>
