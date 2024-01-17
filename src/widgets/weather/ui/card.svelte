@@ -12,22 +12,22 @@
   {#if mode === 'normal'}
     <div class="flex flex-wrap gap-8">
       <h2 class="text-5xl font-bold text-gray-800">{temperature}°C</h2>
-      <div class="flex items-center">
+      <div class="flex items-center gap-4">
         <div>
           <h3 class="tracking-tight text-3xl font-bold text-gray-800">{title}</h3>
           <p class="text-gray-600 capitalize">{kind}</p>
         </div>
-        <img class="w-16 h-16" src={iconURL} alt={kind} />
+        <img class="w-16 h-16 bg-slate-300 rounded-[50%]" src={iconURL} alt={kind} />
       </div>
     </div>
   {:else if mode === 'compact'}
-    <div class="flex justify-between items-center w-full text-gray-600">
+    <div class="flex justify-between items-center w-full text-gray-600 gap-4">
       <div class="tracking-tight font-bold">{title}</div>
       <div>
         {temperature}°C,
         <span class="capitalize">{kind}</span>
       </div>
-      <img class="w-16 h-16" src={iconURL} alt={kind} />
+      <img class="w-16 h-16 bg-slate-300 rounded-[50%]" src={iconURL} alt={kind} />
     </div>
   {/if}
 </Tile>
