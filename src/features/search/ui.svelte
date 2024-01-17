@@ -5,6 +5,12 @@
   } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
   import { nanoid } from 'nanoid';
 
+  export interface SearchEvent extends CustomEvent {
+    detail: {
+      value: string;
+    };
+  }
+
   export interface CountrySelectionEvent extends CustomEvent {
     detail: {
       selectedId: DropdownItemId;
@@ -19,13 +25,20 @@
 </script>
 
 <script lang="ts">
-  import { Dropdown, Search } from 'carbon-components-svelte';
+  import { Button, Dropdown, Search } from 'carbon-components-svelte';
+  import SearchIcon from 'carbon-icons-svelte/lib/Search.svelte';
+  import { createEventDispatcher } from 'svelte';
 
   export let value: string = DEFAULT_ITEM.text;
   export let selectedId: string = DEFAULT_ITEM.id;
   export let searchHistory: DropdownItem[];
 
-  
+  const dispatch = createEventDispatcher<{ search: SearchEvent['detail'] }>();
+
+  function handleClick() {
+    dispatch('search', { value });
+  }
+
   function handleItemFormatting(item: DropdownItem): string {
     if (item.id === DEFAULT_ITEM.id) {
       return 'Select city';
@@ -61,6 +74,13 @@
     on:select={handleSelect}
     itemToString={handleItemFormatting}
     items={[DEFAULT_ITEM, ...searchHistory]}
+  />
+
+  <Button
+    class="text-white bg-[#0353e9] mx-auto"
+    icon={SearchIcon}
+    iconDescription="Search"
+    on:click={handleClick}
   />
 </div>
 

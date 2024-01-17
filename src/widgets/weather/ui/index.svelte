@@ -6,8 +6,9 @@
 <script lang="ts">
   import { Search } from '$features/search/index.js';
   import { getWeather, WeatherCard, WeatherTable } from '$widgets/weather/index.js';
-  import { Button, Tile } from 'carbon-components-svelte';
+  import { Tile } from 'carbon-components-svelte';
 
+  import type { SearchEvent } from '$features/search/ui.svelte';
   import { persistentStore } from '$shared/utils.js';
   import type { Writable } from 'svelte/store';
 
@@ -16,11 +17,10 @@
   const searchHistory: Writable<DropdownItem[]> = persistentStore('searchHistory', []);
   const weatherHistory: Writable<WeatherData[]> = persistentStore('weatherHistory', []);
 
-  let currentCity: string = '';
   let currentCityWeather: Promise<WeatherData> | null = null;
 
-  function handleSearch() {
-    currentCityWeather = getWeather(currentCity);
+  function handleSearch(event: SearchEvent) {
+    currentCityWeather = getWeather(event.detail.value);
   }
 
   function handleStoringCurrentWeatherREFACTOR(node: HTMLDivElement, data: WeatherData) {
@@ -30,11 +30,7 @@
 
 <div class="flex flex-col w-full max-w-md gap-8 pt-8">
   <Tile class="flex flex-col gap-3 justify-between">
-    <Search bind:value={currentCity} searchHistory={$searchHistory} />
-
-    <Button class="w-full max-w-none text-white bg-[#0353e9] mx-auto" on:click={handleSearch}>
-      Search
-    </Button>
+    <Search on:search={handleSearch} searchHistory={$searchHistory} />
   </Tile>
 
   <Tile>
