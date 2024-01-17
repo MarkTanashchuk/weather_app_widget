@@ -8,7 +8,7 @@
   export let mode: 'compact' | 'normal' = 'normal';
 </script>
 
-<Tile class="flex items-center justify-between rounded-lg w-full mx-auto">
+<Tile class="flex items-center justify-between rounded-lg w-full px-0">
   {#if mode === 'normal'}
     <div class="flex flex-col gap-2">
       <h2 class="tracking-tight text-3xl font-bold text-gray-800">{title}</h2>
