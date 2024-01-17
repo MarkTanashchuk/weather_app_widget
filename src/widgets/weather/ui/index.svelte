@@ -26,6 +26,7 @@
 
     try {
       let weatherData = await getWeather(event.detail.value);
+      weatherRequestsPending += 1;
 
       $weatherHistory = [weatherData, ...$weatherHistory];
       $searchHistory = [{ id: nanoid(), text: event.detail.value }, ...$searchHistory];
