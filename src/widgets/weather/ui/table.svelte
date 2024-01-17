@@ -5,10 +5,10 @@
   export let items: WeatherData[];
 </script>
 
-<Tile>
+<Tile class="pr-0 h-full">
   {#if items.length > 0}
     <h2 class="font-bold">Search history:</h2>
-    <div class="flex flex-col">
+    <div class="flex flex-col h-full pr-4 overflow-y-scroll">
       {#each items as item}
         <WeatherCard
           kind={item.description}
@@ -20,6 +20,6 @@
       {/each}
     </div>
   {:else}
-    <p>Make at least one search to enable search history</p>
+    <p class="pr-4">Make at least one search to enable search history</p>
   {/if}
 </Tile>
