@@ -15,11 +15,14 @@
   export let showHistory: boolean = false;
 
   let weatherRequestsPending = 0;
+  let errorMessage: string | null = null;
 
   const searchHistory: Writable<DropdownItem[]> = persistentStore('searchHistory', []);
   const weatherHistory: Writable<WeatherData[]> = persistentStore('weatherHistory', []);
 
   async function handleSearch(event: SearchEvent) {
+    errorMessage = null;
+
     try {
       let weatherData = await getWeather(event.detail.value);
       weatherRequestsPending += 1;
@@ -29,6 +32,8 @@
       weatherRequestsPending -= 1;
     } catch (error) {
       console.error(error);
+
+      errorMessage = error as string;
     }
   }
 
@@ -53,11 +58,11 @@
   />
 
   <div class="flex justify-between w-full h-full gap-8">
-    <Tile class="flex flex-col flex-1 justify-between">
+    <Tile class="flex flex-col flex-1 justify-end">
       {#if selectedWeather}
         <h2 class="font-bold">Latest search:</h2>
         <!-- TODO: Implement custom background based on weather -->
-        <div class="py-2">
+        <div class="py-2 justify-self-end">
           <WeatherCard
             kind={selectedWeather.description}
             iconURL={selectedWeather.iconURL}
@@ -77,6 +82,10 @@
           Enter the city name and click on the search button to obtain the current weather for the
           desired city
         </p>
+      {/if}
+
+      {#if errorMessage}
+        <p class="text-red-600">{errorMessage}</p>
       {/if}
     </Tile>
 
