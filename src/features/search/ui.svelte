@@ -18,14 +18,25 @@
     };
   }
 
-  export const DEFAULT_ITEM: DropdownItem = {
-    id: nanoid(),
-    text: ''
-  };
+  export function generateDropdownItem(text: string): DropdownItem {
+    return {
+      id: nanoid(),
+      text
+    };
+  }
+
+  export const DEFAULT_ITEM: DropdownItem = generateDropdownItem('');
+  export const DELIMITER_ITEM: DropdownItem = generateDropdownItem('');
+
+  export const BASE_CITIES: DropdownItem[] = [
+    generateDropdownItem('New York'),
+    generateDropdownItem('Ukraine')
+  ];
 </script>
 
 <script lang="ts">
   import { Button, Dropdown, Search } from 'carbon-components-svelte';
+  import FilterIcon from 'carbon-icons-svelte/lib/Filter.svelte';
   import SearchIcon from 'carbon-icons-svelte/lib/Search.svelte';
   import { createEventDispatcher } from 'svelte';
 
@@ -33,9 +44,12 @@
   export let selectedId: string = DEFAULT_ITEM.id;
   export let searchHistory: DropdownItem[];
 
-  const dispatch = createEventDispatcher<{ search: SearchEvent['detail'] }>();
+  const dispatch = createEventDispatcher<{
+    search: SearchEvent['detail'];
+    reset: void;
+  }>();
 
-  function handleClick() {
+  function handleSearch() {
     dispatch('search', { value });
   }
 
@@ -44,11 +58,19 @@
       return 'Select city';
     }
 
+    if (item.id === DELIMITER_ITEM.id) {
+      return 'Previous search history:';
+    }
+
     return item.text || item.id;
   }
 
   function handleSearchReset() {
     selectedId = DEFAULT_ITEM.id;
+  }
+
+  function handleClearHistory() {
+    dispatch('reset');
   }
 
   function handleSelect(event: CountrySelectionEvent) {
@@ -72,14 +94,22 @@
     bind:selectedId
     on:select={handleSelect}
     itemToString={handleItemFormatting}
-    items={[DEFAULT_ITEM, ...searchHistory]}
+    items={[DEFAULT_ITEM, ...BASE_CITIES, DELIMITER_ITEM, ...searchHistory]}
+  />
+
+  <Button
+    kind="danger"
+    class="bg-[#da1e28]"
+    icon={FilterIcon}
+    iconDescription="Clear Search History"
+    on:click={handleClearHistory}
   />
 
   <Button
     class="text-white bg-[#0353e9] mx-auto"
     icon={SearchIcon}
     iconDescription="Search"
-    on:click={handleClick}
+    on:click={handleSearch}
   />
 </div>
 

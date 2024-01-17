@@ -35,9 +35,13 @@
     }
   }
 
-  function handleClearHistory() {
+  function handleClearWeatherHistory() {
     $weatherHistory = [];
     weatherRequestsPending = 0;
+  }
+
+  function handleClearSearchHistory() {
+    $searchHistory = [];
   }
 
   let selectedWeather: WeatherData | undefined;
@@ -45,7 +49,11 @@
 </script>
 
 <div class="flex flex-col w-full h-full gap-8 pt-8">
-  <Search on:search={handleSearch} searchHistory={$searchHistory} />
+  <Search
+    on:search={handleSearch}
+    on:reset={handleClearSearchHistory}
+    searchHistory={$searchHistory}
+  />
 
   <div class="flex justify-between w-full h-full gap-8">
     <Tile class="flex flex-col flex-1 justify-between">
@@ -82,9 +90,9 @@
           class="w-full max-w-none bg-[#da1e28]"
           icon={FilterIcon}
           iconDescription="Clear History"
-          on:click={handleClearHistory}
+          on:click={handleClearWeatherHistory}
         >
-          Clear History
+          Clear Weather History
         </Button>
       </div>
     {/if}
