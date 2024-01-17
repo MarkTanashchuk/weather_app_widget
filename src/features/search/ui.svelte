@@ -3,8 +3,6 @@
     DropdownItem,
     DropdownItemId
   } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
-  import { nanoid } from 'nanoid';
-
   export interface SearchEvent extends CustomEvent {
     detail: {
       value: string;
@@ -17,24 +15,10 @@
       selectedItem: DropdownItem;
     };
   }
-
-  export function generateDropdownItem(text: string): DropdownItem {
-    return {
-      id: nanoid(),
-      text
-    };
-  }
-
-  export const DEFAULT_ITEM: DropdownItem = generateDropdownItem('');
-  export const DELIMITER_ITEM: DropdownItem = generateDropdownItem('');
-
-  export const BASE_CITIES: DropdownItem[] = [
-    generateDropdownItem('New York'),
-    generateDropdownItem('Ukraine')
-  ];
 </script>
 
 <script lang="ts">
+  import { BASE_CITIES, DEFAULT_ITEM, DELIMITER_ITEM } from '$features/search/index.js';
   import { Button, Dropdown, Search } from 'carbon-components-svelte';
   import FilterIcon from 'carbon-icons-svelte/lib/Filter.svelte';
   import SearchIcon from 'carbon-icons-svelte/lib/Search.svelte';
