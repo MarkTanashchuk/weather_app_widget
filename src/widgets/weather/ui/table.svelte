@@ -5,10 +5,10 @@
   export let items: WeatherData[];
 </script>
 
-<Tile class="pr-0 h-full">
+<Tile class="pr-0 h-full flex-[1_1_0]">
   {#if items.length > 0}
     <h2 class="font-bold">Search history:</h2>
-    <div class="flex flex-col h-full pr-4 overflow-y-scroll">
+    <div class="flex flex-col flex-1 h-full pr-4 overflow-y-scroll">
       {#each items as item}
         <WeatherCard
           kind={item.description}
