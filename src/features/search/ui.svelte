@@ -22,7 +22,7 @@
 
   export let value: string;
   export let selectedId: string = '0';
-  export let dropdownItems: DropdownItem[];
+  export let searchHistory: DropdownItem[];
 
   function handleSearchReset() {
     selectedId = DEFAULT_ITEM.id;
@@ -48,7 +48,7 @@
     class="normalize-dropdown"
     bind:selectedId
     on:select={handleSelect}
-    items={[DEFAULT_ITEM, ...dropdownItems]}
+    items={[DEFAULT_ITEM, ...searchHistory]}
   />
 </div>
 

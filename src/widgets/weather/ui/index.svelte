@@ -1,21 +1,20 @@
 <script context="module" lang="ts">
   import type { WeatherData } from '$widgets/weather/index.js';
   import type { DropdownItem } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
-
-  const items: DropdownItem[] = [
-    { id: '1', text: 'Ukraine' },
-    { id: '2', text: 'London' }
-  ];
 </script>
 
 <script lang="ts">
   import { Search } from '$features/search/index.js';
-  import { WeatherCard, WeatherTable, getWeather } from '$widgets/weather/index.js';
+  import { getWeather, WeatherCard, WeatherTable } from '$widgets/weather/index.js';
   import { Button, Tile } from 'carbon-components-svelte';
+
+  import { persistentStore } from '$shared/utils.js';
+  import type { Writable } from 'svelte/store';
 
   export let showHistory: boolean = false;
 
-  let weatherHistory: WeatherData[] = [];
+  const searchHistory: Writable<DropdownItem[]> = persistentStore('searchHistory', []);
+  const weatherHistory: Writable<WeatherData[]> = persistentStore('weatherHistory', []);
 
   let currentCity: string = '';
   let currentCityWeather: Promise<WeatherData> | null = null;
@@ -25,13 +24,13 @@
   }
 
   function handleStoringCurrentWeatherREFACTOR(node: HTMLDivElement, data: WeatherData) {
-    weatherHistory = [...weatherHistory, data];
+    $weatherHistory = [...$weatherHistory, data];
   }
 </script>
 
 <div class="flex flex-col w-full max-w-md gap-8 pt-8">
   <Tile class="flex flex-col gap-3 justify-between">
-    <Search bind:value={currentCity} dropdownItems={items} />
+    <Search bind:value={currentCity} searchHistory={$searchHistory} />
 
     <Button class="w-full max-w-none text-white bg-[#0353e9] mx-auto" on:click={handleSearch}>
       Search
@@ -66,6 +65,6 @@
   </Tile>
 
   {#if showHistory}
-    <WeatherTable items={weatherHistory} />
+    <WeatherTable items={$weatherHistory} />
   {/if}
 </div>
