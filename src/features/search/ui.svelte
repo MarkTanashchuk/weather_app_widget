@@ -57,7 +57,7 @@
     if (selectedCity == DEFAULT_ITEM.id) {
       value = '';
     } else {
-      value = event.detail.selectedItem.text;
+      value = selectedCity;
     }
   }
 </script>
