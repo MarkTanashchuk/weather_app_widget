@@ -83,13 +83,7 @@
   }
 
   function handleSelect(event: CountrySelectionEvent) {
-    let selectedCity = event.detail.selectedItem.text;
-
-    if (selectedCity == DEFAULT_ITEM.id) {
-      value = '';
-    } else {
-      value = selectedCity;
-    }
+    value = event.detail.selectedItem.text;
   }
 </script>
 
