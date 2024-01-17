@@ -24,7 +24,7 @@
   }
 
   function handleStoringCurrentWeatherREFACTOR(node: HTMLDivElement, data: WeatherData) {
-    $weatherHistory = [...$weatherHistory, data];
+    $weatherHistory = [data, ...$weatherHistory];
   }
 </script>
 
