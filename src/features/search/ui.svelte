@@ -38,7 +38,7 @@
   import { Button, Dropdown, Search } from 'carbon-components-svelte';
   import FilterIcon from 'carbon-icons-svelte/lib/Filter.svelte';
   import SearchIcon from 'carbon-icons-svelte/lib/Search.svelte';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
 
   export let value: string = DEFAULT_ITEM.text;
   export let selectedId: string = DEFAULT_ITEM.id;
@@ -48,6 +48,15 @@
     search: SearchEvent['detail'];
     reset: void;
   }>();
+
+  onMount(() => {
+    if (searchHistory.length > 0) {
+      const recentItem = searchHistory[0];
+
+      selectedId = recentItem.id;
+      value = recentItem.text;
+    }
+  });
 
   function handleSearch() {
     dispatch('search', { value });
