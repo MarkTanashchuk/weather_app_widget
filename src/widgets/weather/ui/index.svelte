@@ -29,9 +29,7 @@
 </script>
 
 <div class="flex flex-col w-full max-w-md gap-8 pt-8">
-  <Tile class="flex flex-col gap-3 justify-between">
-    <Search on:search={handleSearch} searchHistory={$searchHistory} />
-  </Tile>
+  <Search on:search={handleSearch} searchHistory={$searchHistory} />
 
   <Tile>
     <h2 class="font-bold">Current weather:</h2>

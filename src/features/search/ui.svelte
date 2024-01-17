@@ -67,9 +67,8 @@
 
   <Dropdown
     type="inline"
-    light
     size="xl"
-    class="normalize-dropdown"
+    class="normalize-dropdown bg-white"
     bind:selectedId
     on:select={handleSelect}
     itemToString={handleItemFormatting}
