@@ -63,29 +63,21 @@ export interface WeatherData {
 export async function getWeather(city: string): Promise<WeatherData> {
   const url = `${BASE_URL}?q=${city}&units=metric&appid=${API_KEY}`;
 
-  let result: WeatherData;
-
   if (city === '') {
     throw Error('Please provide the name of a city');
   }
 
-  try {
-    const response = await fetch(url);
+  const response = await fetch(url);
 
-    if (response.status === 404) {
-      throw Error(`'${city}' could not be found`);
-    }
-
-    if (!response.ok) {
-      throw Error('Failed to make a request');
-    }
-
-    result = await response.json();
-  } catch (err) {
-    console.warn(err);
-
-    throw Error('Internal fetching error occurred. Please try again');
+  if (response.status === 404) {
+    throw Error(`'${city}' could not be found`);
   }
+
+  if (!response.ok) {
+    throw Error('Failed to make a request');
+  }
+
+  const result: WeatherData = await response.json();
 
   return {
     ...result,
