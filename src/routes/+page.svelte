@@ -6,7 +6,7 @@
   import { Content } from 'carbon-components-svelte';
 </script>
 
-<Content class="flex flex-col items-center justify-center w-1/2 m-auto">
+<Content class="flex flex-col container h-screen items-center justify-center m-auto py-8">
   <h1 class="text-4xl font-bold text-gray-800">Weather App</h1>
 
   <Weather showHistory />
