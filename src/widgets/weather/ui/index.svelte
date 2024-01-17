@@ -1,10 +1,3 @@
-<script context="module" lang="ts">
-  import type { SearchEvent } from '$features/search/ui.svelte';
-  import type { WeatherData } from '$widgets/weather/index.js';
-  import type { DropdownItem } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
-  import type { Writable } from 'svelte/store';
-</script>
-
 <script lang="ts">
   import { Search } from '$features/search/index.js';
   import { persistentStore } from '$shared/utils.js';
@@ -14,6 +7,11 @@
   import FilterIcon from 'carbon-icons-svelte/lib/Filter.svelte';
   import { nanoid } from 'nanoid';
 
+  import type { SearchEvent } from '$features/search/ui.svelte';
+  import type { WeatherData } from '$widgets/weather/index.js';
+  import type { DropdownItem } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
+  import type { Writable } from 'svelte/store';
+
   export let showHistory: boolean = false;
 
   let weatherRequestsPending = 0;
@@ -22,8 +20,6 @@
   const weatherHistory: Writable<WeatherData[]> = persistentStore('weatherHistory', []);
 
   async function handleSearch(event: SearchEvent) {
-    weatherRequestsPending += 1;
-
     try {
       let weatherData = await getWeather(event.detail.value);
       weatherRequestsPending += 1;
@@ -60,6 +56,7 @@
     <Tile class="flex flex-col flex-1 justify-between">
       {#if selectedWeather}
         <h2 class="font-bold">Latest search:</h2>
+        <!-- TODO: Implement custom background based on weather -->
         <div class="py-2">
           <WeatherCard
             kind={selectedWeather.description}

@@ -9,6 +9,7 @@
   {#if items.length > 0}
     <h2 class="font-bold">Search history:</h2>
     <div class="flex flex-col flex-1 h-full pr-4 overflow-y-scroll">
+      <!-- TODO: Implement card selection -->
       {#each items as item}
         <WeatherCard
           kind={item.description}
