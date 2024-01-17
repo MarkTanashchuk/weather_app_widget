@@ -3,6 +3,7 @@
     DropdownItem,
     DropdownItemId
   } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
+  import { nanoid } from 'nanoid';
 
   export interface CountrySelectionEvent extends CustomEvent {
     detail: {
@@ -12,17 +13,26 @@
   }
 
   export const DEFAULT_ITEM: DropdownItem = {
-    id: '0',
-    text: 'Select item'
+    id: nanoid(),
+    text: ''
   };
 </script>
 
 <script lang="ts">
   import { Dropdown, Search } from 'carbon-components-svelte';
 
-  export let value: string;
-  export let selectedId: string = '0';
+  export let value: string = DEFAULT_ITEM.text;
+  export let selectedId: string = DEFAULT_ITEM.id;
   export let searchHistory: DropdownItem[];
+
+  
+  function handleItemFormatting(item: DropdownItem): string {
+    if (item.id === DEFAULT_ITEM.id) {
+      return 'Select city';
+    }
+
+    return item.text || item.id;
+  }
 
   function handleSearchReset() {
     selectedId = DEFAULT_ITEM.id;
@@ -41,6 +51,7 @@
 
 <div class="flex">
   <Search bind:value on:clear={handleSearchReset} />
+
   <Dropdown
     type="inline"
     light
@@ -48,6 +59,7 @@
     class="normalize-dropdown"
     bind:selectedId
     on:select={handleSelect}
+    itemToString={handleItemFormatting}
     items={[DEFAULT_ITEM, ...searchHistory]}
   />
 </div>
