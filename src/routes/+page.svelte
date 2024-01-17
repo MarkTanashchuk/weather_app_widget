@@ -9,8 +9,8 @@
 </script>
 
 <script lang="ts">
-  import { Search } from '$widgets/search/index.js';
-  import { WeatherCard, getWeather } from '$widgets/weather/index.js';
+  import { Search } from '../features/search/index.js';
+  import { WeatherCard, WeatherTable, getWeather } from '$widgets/weather/index.js';
   import { Button, Content, Tile } from 'carbon-components-svelte';
 
   let weatherHistory: WeatherData[] = [];
@@ -66,23 +66,6 @@
       </div>
     </Tile>
 
-    <Tile>
-      {#if weatherHistory.length > 0}
-        <h2 class="font-bold">Search history:</h2>
-        <div class="flex flex-col">
-          {#each weatherHistory as item}
-            <WeatherCard
-              kind={item.description}
-              iconURL={item.iconURL}
-              temperature={item.main.temp}
-              title={item.name}
-              mode="compact"
-            />
-          {/each}
-        </div>
-      {:else}
-        <p>Make at least one search to enable search history</p>
-      {/if}
-    </Tile>
+    <WeatherTable items={weatherHistory} />
   </div>
 </Content>
