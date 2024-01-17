@@ -59,11 +59,13 @@
   }
 
   function handleSearchReset() {
+    value = '';
     selectedId = DEFAULT_ITEM.id;
   }
 
   function handleClearHistory() {
     dispatch('reset');
+    handleSearchReset();
   }
 
   function handleSelect(event: CountrySelectionEvent) {
