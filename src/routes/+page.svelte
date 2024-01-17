@@ -1,51 +1,25 @@
 <script context="module" lang="ts">
-  import type {
-    DropdownItem,
-    DropdownItemId
-  } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
-
   import type { WeatherData } from '$widgets/weather/index.js';
+  import type { DropdownItem } from 'carbon-components-svelte/src/Dropdown/Dropdown.svelte';
 
-  export interface CountrySelectionEvent extends CustomEvent {
-    detail: {
-      selectedId: DropdownItemId;
-      selectedItem: DropdownItem;
-    };
-  }
-</script>
-
-<script lang="ts">
-  import { WeatherCard, getWeather } from '$widgets/weather/index.js';
-  import { Button, Content, Dropdown, Search, Tile } from 'carbon-components-svelte';
-
-  const items = [
-    { id: '0', text: 'Choose City' },
+  const items: DropdownItem[] = [
     { id: '1', text: 'Ukraine' },
     { id: '2', text: 'London' }
   ];
+</script>
+
+<script lang="ts">
+  import { Search } from '$widgets/search/index.js';
+  import { WeatherCard, getWeather } from '$widgets/weather/index.js';
+  import { Button, Content, Tile } from 'carbon-components-svelte';
 
   let weatherHistory: WeatherData[] = [];
 
-  let cityId: string = '0';
   let currentCity: string = '';
   let currentCityWeather: Promise<WeatherData> | null = null;
 
   function handleSearch() {
     currentCityWeather = getWeather(currentCity);
-  }
-
-  function handleSearchReset() {
-    cityId = '0';
-  }
-
-  function handleSelect(event: CountrySelectionEvent) {
-    let selectedCity = event.detail.selectedItem.text;
-
-    if (selectedCity == 'City') {
-      currentCity = '';
-    } else {
-      currentCity = event.detail.selectedItem.text;
-    }
   }
 
   function handleStoringCurrentWeatherREFACTOR(node: HTMLDivElement, data: WeatherData) {
@@ -58,20 +32,7 @@
 
   <div class="flex flex-col w-full max-w-md gap-8 pt-8">
     <Tile class="flex flex-col gap-3 justify-between">
-      <div class="flex">
-        <Search bind:value={currentCity} on:clear={handleSearchReset} />
-        <Dropdown
-          type="inline"
-          light
-          size="xl"
-          style="grid-gap:0;
-
-border-bottom: 1px solid rgb(141, 141, 141)"
-          bind:selectedId={cityId}
-          on:select={handleSelect}
-          {items}
-        />
-      </div>
+      <Search bind:value={currentCity} dropdownItems={items} />
 
       <Button class="w-full max-w-none text-white bg-[#0353e9] mx-auto" on:click={handleSearch}>
         Search
